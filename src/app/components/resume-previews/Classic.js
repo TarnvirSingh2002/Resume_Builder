@@ -12,13 +12,19 @@ export default function ClassicResumePreview({ data }) {
         email = "",
         phone = "",
         linkedin = "",
-        github = "",
+        location = "",
+        summary="",
         skills = "",
         experience = [],
         projects = [],
         certifications = [],
         education = []
     } = data;
+
+    function capitalize(str) {
+        if (!str) return '';                    // handle empty / null / undefined
+        return str.charAt(0).toUpperCase() + str.slice(1);
+        }
 
     const handleDownloadPDF = async () => {
         if (!resumeRef.current) return;
@@ -111,11 +117,13 @@ export default function ClassicResumePreview({ data }) {
                     {phone && <span>{phone}</span>}
                     {email && <span>• {email}</span>}
                     {linkedin && <span>• {linkedin}</span>}
-                    {github && <span>• {github}</span>}
+                    {location && <span>• {capitalize(location)}</span>}
+
                 </p>
 
                 <hr className="border-gray-800 mb-5" />
-
+                <span>{summary}</span>
+                <hr className="border-gray-800 mb-5 mt-5" />
                 {/* TECHNICAL SKILLS */}
                 {skills && (
                     <Section title="Technical Skills">
@@ -129,43 +137,18 @@ export default function ClassicResumePreview({ data }) {
                         {experience.map((exp, i) => (
                             <div key={i} className="mb-4">
                                 <div className="flex justify-between font-semibold">
-                                    <span>{exp.company}</span>
+                                    <span>{exp?.company ? capitalize(exp.company) : ''}</span>
                                     <span className="text-sm">{exp.duration}</span>
-                                    <span>{exp.role}</span>
+                                    <span>{exp?.role ? capitalize(exp.role) : ''}</span>
                                 </div>
                                 {exp.location && (
-                                    <p className="text-sm text-gray-600">{exp.location}</p>
+                                    <p className="text-sm text-gray-600">{exp?.location ? capitalize(exp.location) : ''}</p>
                                 )}
-                                <ul className="list-disc ml-5 mt-2 space-y-1">
+                                <ul className="list-disc mt-2 space-y-1">
                                     {exp.description}
                                 </ul>
                             </div>
                         ))}
-                    </Section>
-                )}
-
-                {/* PERSONAL PROJECTS */}
-                {projects.length > 0 && (
-                    <Section title="Personal Projects">
-                        {projects.map((proj, i) => (
-                            <div key={i} className="mb-3">
-                                <p className="font-semibold">{proj.title}</p>
-                                <ul className="list-disc ml-5 mt-1 space-y-1">
-                                    {proj.points.map((p, idx) => (
-                                        <li key={idx}>{p}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
-                    </Section>
-                )}
-
-                {/* CERTIFICATIONS */}
-                {certifications.length > 0 && (
-                    <Section title="Certifications">
-                        <ul className="list-disc ml-5 space-y-1">
-                            {certifications}
-                        </ul>
                     </Section>
                 )}
 
@@ -175,15 +158,26 @@ export default function ClassicResumePreview({ data }) {
                         {education.map((edu, i) => (
                             <div key={i} className="mb-2">
                                 <div className="flex justify-between font-semibold">
-                                    <span>{edu.institution}</span>
-                                    <span className="text-sm">{edu.duration}</span>
+                                    <span>{edu?.institute ? capitalize(edu.institute) : ''}</span>
+                                    <span className="text-sm">{edu.year}</span>
                                 </div>
-                                <p className="text-sm">{edu.degree}</p>
+                                <p className="text-sm">{edu?.degree ? capitalize(edu.degree):""}</p>
                                 {edu.location && (
-                                    <p className="text-sm text-gray-600">{edu.location}</p>
+                                    <p className="text-sm text-gray-600">{edu?.location ? capitalize(edu.location) : ''}</p>
                                 )}
                             </div>
                         ))}
+                    </Section>
+                )}
+
+
+
+                {/* CERTIFICATIONS */}
+                {certifications.length > 0 && (
+                    <Section title="Certifications">
+                        <ul className="list-disc space-y-1">
+                            {certifications}
+                        </ul>
                     </Section>
                 )}
             </div>

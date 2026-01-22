@@ -14,12 +14,12 @@ import SecurityDevSecOps from "../../components/resume-previews/First";
 import EnhancvModern from "../../components/resume-previews/Modern";
 const resumeTemplates = [
   {
-    id: 8,//working
+    id: 8,//done
     name: 'Classic Resume',
     component: Resume
   },
   {
-    id: 2,
+    id: 2, //done
     name: 'Modern Resume',
     component: EnhancvModern
   },
@@ -34,12 +34,12 @@ const resumeTemplates = [
     component: SecurityDevSecOpsPreview
   },
   {
-    id: 6, //working
+    id: 6, //done
     name: 'Tech Resume',
     component: ProfessionalATS
   },
   {
-    id: 7, //working
+    id: 7, //done
     name: 'Designer Resume',
     component: ClassicDevOpsResume
   },

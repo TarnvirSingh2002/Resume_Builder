@@ -23,6 +23,10 @@ export default function ProfessionalATS({ data }) {
     const handleDownloadPDF = async () => {
         if (!resumeRef.current) return;
 
+        const element = resumeRef.current;
+        const btn = element.querySelector(".download-btn");
+    if (btn) btn.style.display = "none";
+
         try {
             const canvas = await html2canvas(resumeRef.current, {
                 scale: 2,
@@ -53,126 +57,311 @@ export default function ProfessionalATS({ data }) {
             }
 
             pdf.save(`${fullName || "Resume"}.pdf`);
+            if (btn) btn.style.display = "flex";
         } catch (err) {
             console.error(err);
             alert("PDF generation failed");
         }
     };
 
-
     return (
-        <div className="flex flex-col items-center pt-20 pb-10 relative">
+        <>
+            <style>{`
+                .resume-container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding-top: 5rem;
+                    padding-bottom: 2.5rem;
+                    position: relative;
+                }
 
-            {/* Download PDF Button — top-right of resume page */}
+                .resume-paper {
+                    position: relative;
+                    width: 800px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    background-color: white;
+                    color: black;
+                    padding: 2.5rem;
+                    font-family: Georgia, serif;
+                    line-height: 1.625;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                }
 
-            <div ref={resumeRef} className="relative w-[800px] mx-auto bg-white text-black p-10 font-serif leading-relaxed "
-                style={{ boxShadow: "0 0 15px rgba(0,0,0,0.1)" }}>
+                .download-btn {
+                    position: absolute;
+                    top: 0.25rem;
+                    right: 0.25rem;
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 50%;
+                    background-color: #2563eb;
+                    color: white;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
 
-                <div className="absolute top-1 right-1">
-                    <button
-                        onClick={handleDownloadPDF}
-                        title="Download PDF"
-                        className="w-11 h-11 rounded-full bg-blue-600 text-white shadow-lg 
-                        flex items-center justify-center
-                        hover:bg-blue-700 hover:scale-110 
-                        transition-all duration-200"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
+                .download-btn:hover {
+                    background-color: #1d4ed8;
+                    transform: scale(1.1);
+                }
+
+                .download-icon {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+
+                .resume-header {
+                    text-align: right;
+                    margin-bottom: 2rem;
+                }
+
+                .resume-header h1 {
+                    font-size: 1.875rem;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    margin: 0;
+                }
+
+                .resume-header p {
+                    font-size: 0.875rem;
+                    margin-top: 0.25rem;
+                    margin-bottom: 0;
+                }
+
+                .summary-section {
+                    margin-bottom: 1rem;
+                }
+
+                .summary-section p {
+                    font-style: italic;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .section {
+                    margin-bottom: 2rem;
+                }
+
+                .section-title {
+                    font-size: 0.875rem;
+                    font-weight: bold;
+                    border-bottom: 2px solid black;
+                    padding-bottom: 0.25rem;
+                    margin-bottom: 1rem;
+                    text-transform: uppercase;
+                    margin-top: 0;
+                }
+
+                .experience-item {
+                    margin-bottom: 0.75rem;
+                }
+
+                .experience-header {
+                    display: flex;
+                    justify-content: space-between;
+                    font-weight: 600;
+                }
+
+                .experience-header p {
+                    margin: 0;
+                }
+
+                .experience-duration {
+                    font-size: 0.875rem;
+                }
+
+                .experience-company {
+                    font-style: italic;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                    margin-top: 0;
+                }
+
+                .experience-description {
+                    list-style-type: disc;
+                    list-style-position: inside;
+                    font-size: 0.875rem;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .experience-description li {
+                    margin-bottom: 0.25rem;
+                }
+
+                .education-item {
+                    margin-bottom: 0.75rem;
+                }
+
+                .education-header {
+                    display: flex;
+                    justify-content: space-between;
+                    font-weight: 600;
+                }
+
+                .education-header p {
+                    margin: 0;
+                }
+
+                .education-year {
+                    font-size: 0.875rem;
+                }
+
+                .education-institute {
+                    font-style: italic;
+                    font-size: 0.875rem;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+
+                .skills-section {
+                    margin-bottom: 0;
+                }
+
+                .skills-text {
+                    font-size: 0.875rem;
+                    margin-bottom: 0.5rem;
+                    margin-top: 0;
+                }
+
+                .skills-text strong {
+                    font-weight: bold;
+                }
+
+                @media print {
+                    .resume-container {
+                        padding: 0;
+                    }
+
+                    .download-btn {
+                        display: none;
+                    }
+
+                    .resume-paper {
+                        width: 100%;
+                        box-shadow: none;
+                        padding: 1.5rem;
+                    }
+                }
+                   @media print {
+                        .resume-container {
+                            padding: 0;
+                        }
+
+                        .download-btn {
+                            display: none;
+                        }
+
+                        .resume-paper {
+                            width: 100%;
+                            box-shadow: none;
+                            padding: 1.5rem;
+                        }
+                    }
+
+            `}</style>
+
+            <div className="resume-container">
+                <div ref={resumeRef} className="resume-paper">
+                    <div>
+                        <button
+                            onClick={handleDownloadPDF}
+                            title="Download PDF"
+                            className="download-btn"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 4v12m0 0l-4-4m4 4l4-4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
-                            />
-                        </svg>
-                    </button>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="download-icon"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 4v12m0 0l-4-4m4 4l4-4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <header className="resume-header">
+                        <h1>{fullName || "Your Name"}</h1>
+                        <p>
+                            {location && <span>{location}</span>}
+                            {phone && <> • {phone}</>}
+                        </p>
+                        <p>{email}</p>
+                        <p>{linkedin && <> {linkedin}</>}</p>
+                    </header>
+
+                    <section className="summary-section">
+                        <p>{summary}</p>
+                    </section>
+
+                    <section className="section">
+                        <h2 className="section-title">Work Experience</h2>
+
+                        {experience.map((exp, index) => (
+                            <div key={index} className="experience-item">
+                                <div className="experience-header">
+                                    <p>{exp.role}</p>
+                                    <p className="experience-duration">{exp.duration}</p>
+                                </div>
+
+                                <p className="experience-company">{exp.company}</p>
+
+                                {exp.description && (
+                                    <ul className="experience-description">
+                                        {exp.description.split("\n").map((point, i) => (
+                                            <li key={i}>{point}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        ))}
+                    </section>
+
+                    <section className="section">
+                        <h2 className="section-title">Qualifications</h2>
+
+                        {education.map((edu, index) => (
+                            <div key={index} className="education-item">
+                                <div className="education-header">
+                                    <p>{edu.degree}, {edu.location}</p>
+                                    <p className="education-year">{edu.year}</p>
+                                </div>
+                                <p className="education-institute">{edu.institute}</p>
+                            </div>
+                        ))}
+                    </section>
+
+                    <section className="skills-section">
+                        <h2 className="section-title">Skills & Other</h2>
+
+                        {skills && (
+                            <p className="skills-text">
+                                <strong>Skills:</strong> {skills}
+                            </p>
+                        )}
+
+                        {certifications && (
+                            <p className="skills-text">
+                                <strong>Certifications:</strong> {certifications}
+                            </p>
+                        )}
+                    </section>
                 </div>
-
-                {/* HEADER */}
-                <header className="text-right mb-8">
-                    <h1 className="text-3xl font-bold uppercase tracking-wide">
-                        {fullName || "Your Name"}
-                    </h1>
-                    <p className="text-sm mt-1">
-                        {location && <span>{location}</span>}
-                        {phone && <> • {phone}</>}
-                    </p>
-                    <p className="text-sm">{email}</p>
-                    <p className="text-sm">{linkedin && <> {linkedin}</>}</p>
-                </header>
-
-                <section className="mb-4">
-                    <p className="italic text-sm mb-2">{summary}</p>
-                </section>
-
-                {/* WORK EXPERIENCE */}
-                <section className="mb-8">
-                    <h2 className="text-sm font-bold border-b-2 border-black pb-1 mb-4 uppercase">
-                        Work Experience
-                    </h2>
-
-                    {experience.map((exp, index) => (
-                        <div key={index} className="mb-3">
-                            <div className="flex justify-between font-semibold">
-                                <p>{exp.role}</p>
-                                <p className="text-sm">{exp.duration}</p>
-                            </div>
-
-                            <p className="italic text-sm mb-2">{exp.company}</p>
-
-                            {exp.description && (
-                                <ul className="list-disc list-inside text-sm space-y-1">
-                                    {exp.description.split("\n").map((point, i) => (
-                                        <li key={i}>{point}</li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    ))}
-                </section>
-
-                {/* QUALIFICATIONS / EDUCATION */}
-                <section className="mb-8">
-                    <h2 className="text-sm font-bold border-b-2 border-black pb-1 mb-4 uppercase">
-                        Qualifications
-                    </h2>
-
-                    {education.map((edu, index) => (
-                        <div key={index} className="mb-3">
-                            <div className="flex justify-between font-semibold">
-                                <p>{edu.degree}, {edu.location}</p>
-                                <p className="text-sm">{edu.year}</p>
-                            </div>
-                            <p className="italic text-sm">{edu.institute}</p>
-                        </div>
-                    ))}
-                </section>
-
-                {/* SKILLS & OTHER */}
-                <section>
-                    <h2 className="text-sm font-bold border-b-2 border-black pb-1 mb-4 uppercase">
-                        Skills & Other
-                    </h2>
-
-                    {skills && (
-                        <p className="text-sm mb-2">
-                            <strong>Skills:</strong> {skills}
-                        </p>
-                    )}
-
-                    {certifications && (
-                        <p className="text-sm">
-                            <strong>Certifications:</strong> {certifications}
-                        </p>
-                    )}
-                </section>
             </div>
-        </div>
+        </>
     );
 }

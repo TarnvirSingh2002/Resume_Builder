@@ -1,458 +1,793 @@
+
 // "use client";
+// import { jsPDF } from "jspdf";
+// import html2canvas from "html2canvas";
+// import { useRef, useState } from "react";
 
-// import { useRef } from "react";
+// export default function ResumeTemplatePDF({ data }) {
+//     const resumeRef = useRef(null);
+//     const [hideButton, setHideButton] = useState(false);
 
-// export default function ResumeTemplate() {
-//   const resumeRef = useRef(null);
+//     const {
+//         fullName = "",
+//         email = "",
+//         linkedin = "",
+//         phone = "",
+//         location = "",
+//         summary = "",
+//         education = [],
+//         certifications = "",
+//         experience = [],
+//         skills = "",
+//     } = data;
 
-//   return (
-//     <div style={styles.wrapper}>
-//       <div ref={resumeRef} style={styles.resume} id="resume">
+//     function capitalize(str) {
+//         if (!str) return '';
+//         return str.charAt(0).toUpperCase() + str.slice(1);
+//     }
 
-//         {/* TOP HEX */}
-//         <div style={{ ...styles.hexGroup, top: 0, left: 0 }} />
-//         <div style={{ ...styles.hexGroup, top: 0, right: 0 }} />
+//     const handleDownloadPDF = () => {
+//         // UNCOMMENT THIS CODE WHEN YOU ADD html2canvas AND jsPDF TO YOUR PROJECT:
+        
+//         if (!resumeRef.current) return;
 
-//         {/* HEADER */}
-//         <div style={styles.header}>
-//           <h1 style={styles.name}>ALYSSA<br />MONTGOMERY</h1>
-//           <p style={styles.title}>MULTIMEDIA DESIGN SPECIALIST</p>
+//         setHideButton(true);
 
-//           <div style={styles.contactRow}>
-//             <span>(111) 222 1234</span>
-//             <span>appleberry@gmail.com</span>
-//             <span>New York, NY</span>
-//           </div>
-//         </div>
+//         setTimeout(async () => {
+//             try {
+//                 const canvas = await html2canvas(resumeRef.current, {
+//                     scale: 2,
+//                     useCORS: true,
+//                     backgroundColor: "#ffffff",
+//                 });
 
-//         {/* SECTION */}
-//         <Section title="SUMMARY">
-//           <p>
-//             This should be a brief description of your professional career and
-//             years of experience in your field. You can stand out to hiring
-//             managers by detailing the problem statement you would solve for
-//             the company and how your skills will advance the success of the
-//             business.
-//           </p>
-//         </Section>
+//                 const imgData = canvas.toDataURL("image/png");
+//                 const pdf = new jsPDF("p", "mm", "a4");
 
-//         <Section title="EDUCATION">
-//           <Row
-//             left={
-//               <>
-//                 <strong>Master's Degree</strong>
-//                 <div>Master of Business Administration</div>
-//                 <div>University of New York, New York</div>
-//               </>
+//                 const pageWidth = 210;
+//                 const pageHeight = 297;
+
+//                 const imgWidth = pageWidth;
+//                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+//                 let heightLeft = imgHeight;
+//                 let position = 0;
+
+//                 pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+//                 heightLeft -= pageHeight;
+
+//                 while (heightLeft > 0) {
+//                     position = heightLeft - imgHeight;
+//                     pdf.addPage();
+//                     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+//                     heightLeft -= pageHeight;
+//                 }
+
+//                 pdf.save(`${fullName || "Resume"}.pdf`);
+//             } catch (err) {
+//                 console.error(err);
+//                 alert("PDF generation failed");
+//             } finally {
+//                 setHideButton(false);
 //             }
-//             right="2014 - 2016"
-//           />
+//         }, 100);
+//     };
 
-//           <Row
-//             left={
-//               <>
-//                 <strong>Bachelor's Degree</strong>
-//                 <div>Computer Science</div>
-//                 <div>Michigan Institution of Technology</div>
-//               </>
-//             }
-//             right="2005 - 2010"
-//           />
-//         </Section>
+//     return (
+//         <>
+//             <style>{`
+//                 .wrapper {
+//                     background: #ededed;
+//                     padding: 80px 10px 10px;
+//                     position: relative;
+//                 }
 
-//         <Section title="CERTIFICATIONS">
-//           <div style={styles.certRow}>
-//             <span>• PMP</span>
-//             <span>• CISCO</span>
-//             <span>• ITIL</span>
-//           </div>
-//         </Section>
+//                 .resume-container {
+//                     width: 210mm;
+//                     min-height: 297mm;
+//                     background: #ffffff;
+//                     margin: auto;
+//                     padding: 35mm 25mm 45mm;
+//                     font-family: Arial, sans-serif;
+//                     color: #555;
+//                     position: relative;
+//                 }
 
-//         <Section title="WORK EXPERIENCE">
-//           <Row
-//             left={
-//               <>
-//                 <strong>Position Title</strong>
-//                 <div>Company name | Location</div>
-//                 <ul>
-//                   <li>Brief description of role and achievements.</li>
-//                   <li>Quantifiable success and impact.</li>
-//                   <li>Relevant skills matching the job.</li>
-//                 </ul>
-//               </>
-//             }
-//             right="2005 - 2010"
-//           />
+//                 .download-btn {
+//                     position: absolute;
+//                     top: 0.25rem;
+//                     right: 0.25rem;
+//                     width: 2.75rem;
+//                     height: 2.75rem;
+//                     border-radius: 50%;
+//                     background-color: #2563eb;
+//                     color: white;
+//                     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+//                     display: flex;
+//                     align-items: center;
+//                     justify-content: center;
+//                     border: none;
+//                     cursor: pointer;
+//                     transition: all 0.2s;
+//                     z-index: 10;
+//                 }
 
-//           <Row
-//             left={
-//               <>
-//                 <strong>Position Title</strong>
-//                 <div>Company name | Location</div>
-//                 <ul>
-//                   <li>Brief description of role and achievements.</li>
-//                 </ul>
-//               </>
-//             }
-//             right="2005 - 2010"
-//           />
-//         </Section>
+//                 .download-btn:hover {
+//                     background-color: #1d4ed8;
+//                     transform: scale(1.1);
+//                 }
 
-//         {/* BOTTOM HEX */}
-//         <div style={{ ...styles.hexGroup, bottom: 0, left: 0 }} />
-//         <div style={{ ...styles.hexGroup, bottom: 0, right: 0 }} />
+//                 .download-btn.hidden {
+//                     display: none !important;
+//                 }
 
-//       </div>
-//     </div>
-//   );
+//                 .download-icon {
+//                     width: 1.25rem;
+//                     height: 1.25rem;
+//                 }
+
+//                 .header {
+//                     text-align: center;
+//                     margin-bottom: 20px;
+//                 }
+
+//                 .name {
+//                     font-size: 32px;
+//                     letter-spacing: 4px;
+//                     margin: 0;
+//                     font-weight: 300;
+//                 }
+
+//                 .contact-row {
+//                     display: flex;
+//                     justify-content: space-between;
+//                     font-size: 12px;
+//                     margin-top: 10px;
+//                 }
+
+//                 .section {
+//                     margin-bottom: 20px;
+//                 }
+
+//                 .section-title {
+//                     text-align: center;
+//                     letter-spacing: 3px;
+//                     color: #6bbfc2;
+//                     border-top: 2px solid #6bbfc2;
+//                     border-bottom: 2px solid #6bbfc2;
+//                     padding: 6px 0;
+//                     margin-bottom: 12px;
+//                     font-size: 14px;
+//                 }
+
+//                 .row {
+//                     display: flex;
+//                     justify-content: space-between;
+//                     margin-bottom: 14px;
+//                     font-size: 13px;
+//                 }
+
+//                 .year {
+//                     white-space: nowrap;
+//                     margin-left: 20px;
+//                 }
+
+//                 .cert-row {
+//                     display: flex;
+//                     justify-content: space-around;
+//                     font-size: 13px;
+//                 }
+
+//                 .hex-group {
+//                     position: absolute;
+//                     width: 120px;
+//                     height: 120px;
+//                     background: repeating-linear-gradient(60deg, #10bfc1 0, #10bfc1 20px, transparent 20px, transparent 40px);
+//                     clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0 50%);
+//                 }
+
+//                 .hex-top-left {
+//                     top: 0;
+//                     left: 0;
+//                 }
+
+//                 .hex-top-right {
+//                     top: 0;
+//                     right: 0;
+//                 }
+
+//                 .hex-bottom-left {
+//                     bottom: 0;
+//                     left: 0;
+//                 }
+
+//                 .hex-bottom-right {
+//                     bottom: 0;
+//                     right: 0;
+//                 }
+
+//                 @media print {
+//                     .wrapper {
+//                         padding: 0;
+//                         background: white;
+//                     }
+
+//                     .download-btn {
+//                         display: none;
+//                     }
+
+//                     .resume-container {
+//                         width: 100%;
+//                         padding: 1.5rem;
+//                     }
+//                 }
+//             `}</style>
+
+//             <div className="wrapper">
+//                 <div ref={resumeRef} className="resume-container">
+//                     <button
+//                         onClick={handleDownloadPDF}
+//                         title="Download PDF"
+//                         className={`download-btn ${hideButton ? 'hidden' : ''}`}
+//                     >
+//                         <svg
+//                             xmlns="http://www.w3.org/2000/svg"
+//                             className="download-icon"
+//                             fill="none"
+//                             viewBox="0 0 24 24"
+//                             stroke="currentColor"
+//                             strokeWidth={2}
+//                         >
+//                             <path
+//                                 strokeLinecap="round"
+//                                 strokeLinejoin="round"
+//                                 d="M12 4v12m0 0l-4-4m4 4l4-4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+//                             />
+//                         </svg>
+//                     </button>
+
+//                     {/* TOP HEX */}
+//                     <div className="hex-group hex-top-left" />
+//                     <div className="hex-group hex-top-right" />
+
+//                     {/* HEADER */}
+//                     <div className="header">
+//                         <h1 className="name">{capitalize(fullName)}</h1>
+
+//                         <div className="contact-row">
+//                             {phone && <span>{phone}</span>}
+//                             {email && <span>{email}</span>}
+//                             {linkedin && <span>{linkedin}</span>}
+//                             {location && <span>{capitalize(location)}</span>}
+//                         </div>
+//                     </div>
+
+//                     {/* SUMMARY */}
+//                     <Section title="SUMMARY">
+//                         <p>{summary}</p>
+//                     </Section>
+
+//                     <Section title="Skills">
+//                         {skills}
+//                     </Section>
+
+//                     <Section title="WORK EXPERIENCE">
+//                         {experience.length > 0 && (
+//                             experience.map((exp, i) => (
+//                                 <Row
+//                                     key={i}
+//                                     left={
+//                                         <>
+//                                             <strong>{exp?.company ? capitalize(exp.company) : ""}</strong>
+//                                             <div>{exp?.role ? capitalize(exp.role) : ""}</div>
+//                                             {exp.description && (
+//                                                 <div>
+//                                                     {exp.description}
+//                                                 </div>
+//                                             )}
+//                                         </>
+//                                     }
+//                                     right={exp.duration}
+//                                 />
+//                             ))
+//                         )}
+//                     </Section>
+
+//                     {/* EDUCATION */}
+//                     <Section title="EDUCATION">
+//                         {education.length > 0 && (
+//                             education.map((edu, i) => (
+//                                 <Row
+//                                     key={i}
+//                                     left={
+//                                         <>
+//                                             <strong>{edu?.institute ? capitalize(edu.institute) : ""}</strong>
+//                                             <div>{edu?.degree ? capitalize(edu.degree) : ""}</div>
+//                                         </>
+//                                     }
+//                                     right={
+//                                         <>
+//                                             <strong>{edu.year}</strong>
+//                                             <div>{edu?.location ? capitalize(edu.location) : ""}</div>
+//                                         </>
+//                                     }
+//                                 />
+//                             ))
+//                         )}
+//                     </Section>
+
+//                     {/* CERTIFICATIONS */}
+//                     <Section title="CERTIFICATIONS">
+//                         <div className="cert-row">
+//                             {certifications}
+//                         </div>
+//                     </Section>
+
+//                     {/* BOTTOM HEX */}
+//                     <div className="hex-group hex-bottom-left" />
+//                     <div className="hex-group hex-bottom-right" />
+//                 </div>
+//             </div>
+//         </>
+//     );
 // }
 
 // /* ---------------- SUB COMPONENTS ---------------- */
 
 // function Section({ title, children }) {
-//   return (
-//     <div style={{ marginBottom: "20px" }}>
-//       <div style={styles.sectionTitle}>{title}</div>
-//       <div>{children}</div>
-//     </div>
-//   );
+//     return (
+//         <div className="section">
+//             <div className="section-title">{title}</div>
+//             <div>{children}</div>
+//         </div>
+//     );
 // }
 
 // function Row({ left, right }) {
-//   return (
-//     <div style={styles.row}>
-//       <div>{left}</div>
-//       <div style={styles.year}>{right}</div>
-//     </div>
-//   );
+//     return (
+//         <div className="row">
+//             <div>{left}</div>
+//             <div className="year">{right}</div>
+//         </div>
+//     );
 // }
-
-// /* ---------------- STYLES ---------------- */
-
-// const styles = {
-//   wrapper: {
-//     background: "#ededed",
-//     padding: "80px 10px 10px",
-//   },
-
-//   resume: {
-//     width: "210mm",
-//     minHeight: "297mm",
-//     background: "#ffffff",
-//     margin: "auto",
-//     padding: "35mm 25mm 45mm",
-//     fontFamily: "Arial, sans-serif",
-//     color: "#555",
-//     position: "relative",
-//   },
-
-//   header: {
-//     textAlign: "center",
-//     marginBottom: "20px",
-//   },
-
-//   name: {
-//     fontSize: "32px",
-//     letterSpacing: "4px",
-//     margin: "0",
-//     fontWeight: "300",
-//   },
-
-//   title: {
-//     color: "#6bbfc2",
-//     letterSpacing: "2px",
-//     marginTop: "5px",
-//   },
-
-//   contactRow: {
-//     display: "flex",
-//     justifyContent: "space-between",
-//     fontSize: "12px",
-//     marginTop: "10px",
-//   },
-
-//   sectionTitle: {
-//     textAlign: "center",
-//     letterSpacing: "3px",
-//     color: "#6bbfc2",
-//     borderTop: "2px solid #6bbfc2",
-//     borderBottom: "2px solid #6bbfc2",
-//     padding: "6px 0",
-//     marginBottom: "12px",
-//     fontSize: "14px",
-//   },
-
-//   row: {
-//     display: "flex",
-//     justifyContent: "space-between",
-//     marginBottom: "14px",
-//     fontSize: "13px",
-//   },
-
-//   year: {
-//     whiteSpace: "nowrap",
-//     marginLeft: "20px",
-//   },
-
-//   certRow: {
-//     display: "flex",
-//     justifyContent: "space-around",
-//     fontSize: "13px",
-//   },
-
-//   hexGroup: {
-//     position: "absolute",
-//     width: "120px",
-//     height: "120px",
-//     background:
-//       "repeating-linear-gradient(60deg, #10bfc1 0, #10bfc1 20px, transparent 20px, transparent 40px)",
-//     clipPath:
-//       "polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0 50%)",
-//   },
-// };
-
-
-
 
 
 
 
 "use client";
-
-import { useRef } from "react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { useRef, useState } from "react";
 
 export default function ResumeTemplatePDF({ data }) {
     const resumeRef = useRef(null);
+    const [hideButton, setHideButton] = useState(false);
+
+    if (!data) {
+        data = {
+            fullName: "John Doe",
+            email: "john.doe@email.com",
+            phone: "+1 (555) 123-4567",
+            location: "New York, NY",
+            linkedin: "linkedin.com/in/johndoe",
+            summary: "Experienced professional with a strong background in delivering high-quality results and driving business success.",
+            experience: [
+                {
+                    company: "Tech Company",
+                    location: "New York, NY",
+                    role: "Senior Developer",
+                    duration: "Jan 2020 - Present",
+                    description: "Led development of key features and mentored junior developers."
+                }
+            ],
+            education: [
+                {
+                    institute: "University Name",
+                    degree: "Bachelor of Science in Computer Science",
+                    year: "2019",
+                    location: "New York, NY"
+                }
+            ],
+            skills: "JavaScript, React, Node.js, Python, SQL, Git",
+            certifications: "AWS Certified Developer, Scrum Master Certified"
+        };
+    }
 
     const {
-        fullName = "ALYSSA MONTGOMERY",
-        title = "MULTIMEDIA DESIGN SPECIALIST",
-        email = "appleberry@gmail.com",
-        phone = "(111) 222 1234",
-        location = "New York, NY",
+        fullName = "",
+        email = "",
+        linkedin = "",
+        phone = "",
+        location = "",
         summary = "",
         education = [],
-        certifications = [],
+        certifications = "",
         experience = [],
-        skills="",
+        skills = "",
     } = data;
 
-    const handleDownloadPDF = async () => {
+    function capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    const handleDownloadPDF = () => {        
+         
+        // UNCOMMENT THIS CODE WHEN YOU ADD html2canvas AND jsPDF TO YOUR PROJECT:
+        
         if (!resumeRef.current) return;
 
-        try {
-            const canvas = await html2canvas(resumeRef.current, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: "#ffffff",
-            });
+        setHideButton(true);
 
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
+        setTimeout(async () => {
+            try {
+                const canvas = await html2canvas(resumeRef.current, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: "#ffffff",
+                });
 
-            const pageWidth = 210;
-            const pageHeight = 297;
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF("p", "mm", "a4");
 
-            const imgWidth = pageWidth;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const pageWidth = 210;
+                const pageHeight = 297;
 
-            let heightLeft = imgHeight;
-            let position = 0;
+                const imgWidth = pageWidth;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
+                let heightLeft = imgHeight;
+                let position = 0;
 
-            while (heightLeft > 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
                 pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
-            }
 
-            pdf.save(`${fullName || "Resume"}.pdf`);
-        } catch (err) {
-            console.error(err);
-            alert("PDF generation failed");
-        }
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                pdf.save(`${fullName || "Resume"}.pdf`);
+            } catch (err) {
+                console.error(err);
+                alert("PDF generation failed");
+            } finally {
+                setHideButton(false);
+            }
+        }, 100);
+        
     };
 
     return (
-        <div style={styles.wrapper}>
-             <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
-    <button
-      onClick={handleDownloadPDF}
-      style={{
-        padding: "10px 15px",
-        background: "#6bbfc2",
-        color: "white",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-      }}
-    >
-      Download PDF
-    </button>
-  </div>
-            <div className="w-full max-w-[210mm] flex justify-end px-4 md:px-0"
-                style={{ position: "absolute" }}>
-                <button
-                    onClick={handleDownloadPDF}
-                    className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group"
-                    title="Download as PDF"
-                >
-                    <svg
-                        className="w-6 h-6 group-hover:scale-110 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
+        <>
+            <style>{`
+                .wrapper {
+                    background: #ededed;
+                    padding: 80px 10px 10px;
+                    position: relative;
+                }
+
+                .resume-container {
+                    width: 210mm;
+                    min-height: 297mm;
+                    background: #ffffff;
+                    margin: auto;
+                    padding: 35mm 25mm 45mm;
+                    font-family: Arial, sans-serif;
+                    color: #555;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .download-btn {
+                    position: absolute;
+                    top: 0.25rem;
+                    right: 0.25rem;
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    border-radius: 50%;
+                    background-color: #2563eb;
+                    color: white;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    z-index: 10;
+                }
+
+                .download-btn:hover {
+                    background-color: #1d4ed8;
+                    transform: scale(1.1);
+                }
+
+                .download-btn.hidden {
+                    display: none !important;
+                }
+
+                .download-icon {
+                    width: 1.25rem;
+                    height: 1.25rem;
+                }
+
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+
+                .name {
+                    font-size: 32px;
+                    letter-spacing: 4px;
+                    margin: 0;
+                    font-weight: 300;
+                }
+
+                .contact-row {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    margin-top: 10px;
+                }
+
+                .section {
+                    margin-bottom: 20px;
+                }
+
+                .section-title {
+                    text-align: center;
+                    letter-spacing: 3px;
+                    color: #6bbfc2;
+                    border-top: 2px solid #6bbfc2;
+                    border-bottom: 2px solid #6bbfc2;
+                    padding: 6px 0;
+                    margin-bottom: 12px;
+                    font-size: 14px;
+                }
+
+                .row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 14px;
+                    font-size: 13px;
+                }
+
+                .year {
+                    white-space: nowrap;
+                    margin-left: 20px;
+                }
+
+                .cert-row {
+                    display: flex;
+                    justify-content: space-around;
+                    font-size: 13px;
+                }
+
+                .hex-group {
+                    position: absolute;
+                    width: 120px;
+                    height: 120px;
+                    z-index: 1;
+                }
+
+                .hex-shape {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                }
+
+                .hex-bar {
+                    position: absolute;
+                    width: 20px;
+                    height: 100%;
+                    background: #10bfc1;
+                }
+
+                .hex-bar:nth-child(1) { left: 0px; }
+                .hex-bar:nth-child(2) { left: 20px; background: transparent; }
+                .hex-bar:nth-child(3) { left: 40px; }
+                .hex-bar:nth-child(4) { left: 60px; background: transparent; }
+                .hex-bar:nth-child(5) { left: 80px; }
+                .hex-bar:nth-child(6) { left: 100px; background: transparent; }
+
+                .hex-top-left {
+                    top: -10px;
+                    left: -10px;
+                }
+
+                .hex-top-right {
+                    top: -10px;
+                    right: -10px;
+                }
+
+                .hex-bottom-left {
+                    bottom: -10px;
+                    left: -10px;
+                }
+
+                .hex-bottom-right {
+                    bottom: -10px;
+                    right: -10px;
+                }
+
+                @media print {
+                    .wrapper {
+                        padding: 0;
+                        background: white;
+                    }
+
+                    .download-btn {
+                        display: none !important;
+                    }
+
+                    .resume-container {
+                        width: 100%;
+                        padding: 35mm 25mm 45mm;
+                        overflow: visible;
+                    }
+
+                    .hex-group {
+                        print-color-adjust: exact;
+                        -webkit-print-color-adjust: exact;
+                    }
+
+                    .hex-bar {
+                        print-color-adjust: exact;
+                        -webkit-print-color-adjust: exact;
+                    }
+                }
+            `}</style>
+
+            <div className="wrapper">
+                <div ref={resumeRef} className="resume-container">
+                    <button
+                        onClick={handleDownloadPDF}
+                        title="Download PDF"
+                        className={`download-btn ${hideButton ? 'hidden' : ''}`}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="download-icon"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
                             strokeWidth={2}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                        />
-                    </svg>
-                </button>
-            </div>
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M12 4v12m0 0l-4-4m4 4l4-4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                            />
+                        </svg>
+                    </button>
 
-            <div ref={resumeRef} style={styles.resume} id="resume">
-                {/* TOP HEX */}
-                <div style={{ ...styles.hexGroup, top: 0, left: 0 }} />
-                <div style={{ ...styles.hexGroup, top: 0, right: 0 }} />
-
-                {/* HEADER */}
-                <div style={styles.header}>
-                    <h1 style={styles.name}>{fullName.split(" ")[0]}<br />{fullName.split(" ")[1]}</h1>
-                    <p style={styles.title}>{title}</p>
-
-                    <div style={styles.contactRow}>
-                        {phone && <span>{phone}</span>}
-                        {email && <span>{email}</span>}
-                        {location && <span>{location}</span>}
+                    {/* TOP LEFT HEX */}
+                    <div className="hex-group hex-top-left">
+                        <div className="hex-shape">
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                        </div>
                     </div>
-                </div>
 
-                {/* SUMMARY */}
-                <Section title="SUMMARY">
-                    <p>{summary}</p>
-                </Section>
+                    {/* TOP RIGHT HEX */}
+                    <div className="hex-group hex-top-right">
+                        <div className="hex-shape">
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                        </div>
+                    </div>
 
+                    {/* HEADER */}
+                    <div className="header">
+                        <h1 className="name">{capitalize(fullName)}</h1>
 
+                        <div className="contact-row">
+                            {phone && <span>{phone}</span>}
+                            {email && <span>{email}</span>}
+                            {linkedin && <span>{linkedin}</span>}
+                            {location && <span>{capitalize(location)}</span>}
+                        </div>
+                    </div>
 
-                <Section title="Skills">
-                    {skills}
+                    {/* SUMMARY */}
+                    <Section title="SUMMARY">
+                        <p>{summary}</p>
                     </Section>
 
-                {/* EDUCATION */}
-                <Section title="EDUCATION">
-                    {education.length > 0 ? (
-                        education.map((edu, i) => (
-                            <Row
-                                key={i}
-                                left={
-                                    <>
-                                        <strong>{edu.degree}</strong>
-                                        <div>{edu.field}</div>
-                                        <div>{edu.institution}</div>
-                                    </>
-                                }
-                                right={edu.duration}
-                            />
-                        ))
-                    ) : (
-                        <>
-                            <Row
-                                left={
-                                    <>
-                                        <strong>Master's Degree</strong>
-                                        <div>Master of Business Administration</div>
-                                        <div>University of New York, New York</div>
-                                    </>
-                                }
-                                right="2014 - 2016"
-                            />
-                            <Row
-                                left={
-                                    <>
-                                        <strong>Bachelor's Degree</strong>
-                                        <div>Computer Science</div>
-                                        <div>Michigan Institution of Technology</div>
-                                    </>
-                                }
-                                right="2005 - 2010"
-                            />
-                        </>
-                    )}
-                </Section>
+                    <Section title="Skills">
+                        {skills}
+                    </Section>
 
-                {/* CERTIFICATIONS */}
-                <Section title="CERTIFICATIONS">
-                    <div style={styles.certRow}>
-                        {certifications}
+                    <Section title="WORK EXPERIENCE">
+                        {experience.length > 0 && (
+                            experience.map((exp, i) => (
+                                <Row
+                                    key={i}
+                                    left={
+                                        <>
+                                            <strong>{exp?.company ? capitalize(exp.company) : ""}</strong>
+                                            <div>{exp?.role ? capitalize(exp.role) : ""}</div>
+                                            {exp.description && (
+                                                <div>
+                                                    {exp.description}
+                                                </div>
+                                            )}
+                                        </>
+                                    }
+                                    right={exp.duration}
+                                />
+                            ))
+                        )}
+                    </Section>
+
+                    {/* EDUCATION */}
+                    <Section title="EDUCATION">
+                        {education.length > 0 && (
+                            education.map((edu, i) => (
+                                <Row
+                                    key={i}
+                                    left={
+                                        <>
+                                            <strong>{edu?.institute ? capitalize(edu.institute) : ""}</strong>
+                                            <div>{edu?.degree ? capitalize(edu.degree) : ""}</div>
+                                        </>
+                                    }
+                                    right={
+                                        <>
+                                            <strong>{edu.year}</strong>
+                                            <div>{edu?.location ? capitalize(edu.location) : ""}</div>
+                                        </>
+                                    }
+                                />
+                            ))
+                        )}
+                    </Section>
+
+                    {/* CERTIFICATIONS */}
+                    <Section title="CERTIFICATIONS">
+                        <div className="cert-row">
+                            {certifications}
+                        </div>
+                    </Section>
+
+                    {/* BOTTOM LEFT HEX */}
+                    <div className="hex-group hex-bottom-left">
+                        <div className="hex-shape">
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                        </div>
                     </div>
-                </Section>
 
-                {/* WORK EXPERIENCE */}
-                <Section title="WORK EXPERIENCE">
-                    {experience.length > 0 ? (
-                        experience.map((exp, i) => (
-                            <Row
-                                key={i}
-                                left={
-                                    <>
-                                        <strong>{exp.role}</strong>
-                                        <div>{exp.company} {exp.location && `| ${exp.location}`}</div>
-                                        {exp.description && (
-                                            <ul>
-                                                {exp.description}
-                                            </ul>
-                                        )}
-                                    </>
-                                }
-                                right={exp.duration}
-                            />
-                        ))
-                    ) : (
-                        <>
-                            <Row
-                                left={
-                                    <>
-                                        <strong>Position Title</strong>
-                                        <div>Company name | Location</div>
-                                        <ul>
-                                            <li>Brief description of role and achievements.</li>
-                                            <li>Quantifiable success and impact.</li>
-                                            <li>Relevant skills matching the job.</li>
-                                        </ul>
-                                    </>
-                                }
-                                right="2005 - 2010"
-                            />
-                            <Row
-                                left={
-                                    <>
-                                        <strong>Position Title</strong>
-                                        <div>Company name | Location</div>
-                                        <ul>
-                                            <li>Brief description of role and achievements.</li>
-                                        </ul>
-                                    </>
-                                }
-                                right="2005 - 2010"
-                            />
-                        </>
-                    )}
-                </Section>
-
-                {/* BOTTOM HEX */}
-                <div style={{ ...styles.hexGroup, bottom: 0, left: 0 }} />
-                <div style={{ ...styles.hexGroup, bottom: 0, right: 0 }} />
+                    {/* BOTTOM RIGHT HEX */}
+                    <div className="hex-group hex-bottom-right">
+                        <div className="hex-shape">
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                            <div className="hex-bar"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -460,8 +795,8 @@ export default function ResumeTemplatePDF({ data }) {
 
 function Section({ title, children }) {
     return (
-        <div style={{ marginBottom: "20px" }}>
-            <div style={styles.sectionTitle}>{title}</div>
+        <div className="section">
+            <div className="section-title">{title}</div>
             <div>{children}</div>
         </div>
     );
@@ -469,93 +804,9 @@ function Section({ title, children }) {
 
 function Row({ left, right }) {
     return (
-        <div style={styles.row}>
+        <div className="row">
             <div>{left}</div>
-            <div style={styles.year}>{right}</div>
+            <div className="year">{right}</div>
         </div>
     );
 }
-
-/* ---------------- STYLES ---------------- */
-
-const styles = {
-    wrapper: {
-        background: "#ededed",
-        padding: "80px 10px 10px",
-    },
-
-    resume: {
-        width: "210mm",
-        minHeight: "297mm",
-        background: "#ffffff",
-        margin: "auto",
-        padding: "35mm 25mm 45mm",
-        fontFamily: "Arial, sans-serif",
-        color: "#555",
-        position: "relative",
-    },
-
-    header: {
-        textAlign: "center",
-        marginBottom: "20px",
-    },
-
-    name: {
-        fontSize: "32px",
-        letterSpacing: "4px",
-        margin: "0",
-        fontWeight: "300",
-    },
-
-    title: {
-        color: "#6bbfc2",
-        letterSpacing: "2px",
-        marginTop: "5px",
-    },
-
-    contactRow: {
-        display: "flex",
-        justifyContent: "space-between",
-        fontSize: "12px",
-        marginTop: "10px",
-    },
-
-    sectionTitle: {
-        textAlign: "center",
-        letterSpacing: "3px",
-        color: "#6bbfc2",
-        borderTop: "2px solid #6bbfc2",
-        borderBottom: "2px solid #6bbfc2",
-        padding: "6px 0",
-        marginBottom: "12px",
-        fontSize: "14px",
-    },
-
-    row: {
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "14px",
-        fontSize: "13px",
-    },
-
-    year: {
-        whiteSpace: "nowrap",
-        marginLeft: "20px",
-    },
-
-    certRow: {
-        display: "flex",
-        justifyContent: "space-around",
-        fontSize: "13px",
-    },
-
-    hexGroup: {
-        position: "absolute",
-        width: "120px",
-        height: "120px",
-        background:
-            "repeating-linear-gradient(60deg, #10bfc1 0, #10bfc1 20px, transparent 20px, transparent 40px)",
-        clipPath:
-            "polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0 50%)",
-    },
-};

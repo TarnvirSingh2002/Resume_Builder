@@ -85,14 +85,9 @@ export default function ClassicDevOpsResume({ data }) {
             <div key={i} style={styles.block}>
               <strong>{edu.institute}</strong>
               <p>{edu.degree}</p>
-              {/* <span style={styles.muted}>
-                {edu.duration} • {edu.location}
-              </span> */}
-              {/* <ul>
-                {edu.points?.map((p, idx) => (
-                  <li key={idx}>{p}</li>
-                ))}
-              </ul> */}
+              <span style={styles.muted}>
+                {edu.year} • {edu.location}
+              </span>
             </div>
           ))}
         </Section>
@@ -104,13 +99,11 @@ export default function ClassicDevOpsResume({ data }) {
               <strong>{exp.company}</strong>
               <p>{exp.role}</p>
               <span style={styles.muted}>
-                {exp.duration} • {exp?.location}
+                {exp.duration}
               </span>
-              {/* <ul>
-                {exp.points.map((p, idx) => (
-                  <li key={idx}>{p}</li>
-                ))}
-              </ul> */}
+              <ul>
+                {exp.description}
+              </ul>
             </div>
           ))}
         </Section>
