@@ -23,28 +23,28 @@ export default function HomePage() {
 
 
   const [isVisible2, setIsVisible2] = useState(false);
-const sectionRef = useRef(null);
+  const sectionRef = useRef(null);
 
-useEffect(() => {
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !isVisible2) {
-        setIsVisible2(true);
-      }
-    },
-    { threshold: 0.2 }
-  );
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible2) {
+          setIsVisible2(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
 
-  if (sectionRef.current) {
-    observer.observe(sectionRef.current);
-  }
-
-  return () => {
     if (sectionRef.current) {
-      observer.unobserve(sectionRef.current);
+      observer.observe(sectionRef.current);
     }
-  };
-}, [isVisible2]);
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, [isVisible2]);
 
   const templates = [
     { name: "Professional", color: "from-blue-500 to-blue-600" },
@@ -427,9 +427,8 @@ useEffect(() => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-5xl mx-auto">
             {/* Feature 1 */}
-            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${
-              isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`} style={{ transitionDelay: '100ms' }}>
+            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`} style={{ transitionDelay: '100ms' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
@@ -444,9 +443,8 @@ useEffect(() => {
             </div>
 
             {/* Feature 2 */}
-            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${
-              isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`} style={{ transitionDelay: '300ms' }}>
+            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`} style={{ transitionDelay: '300ms' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -461,9 +459,8 @@ useEffect(() => {
             </div>
 
             {/* Feature 3 */}
-            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${
-              isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-            }`} style={{ transitionDelay: '500ms' }}>
+            <div className={`bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-700 text-center ${isVisible2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+              }`} style={{ transitionDelay: '500ms' }}>
               <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
                 <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -480,25 +477,21 @@ useEffect(() => {
         </div>
       </section>
 
-
-
-
-
-{/* CTA Section */}
-                <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        Ready to Create Your Resume?
-                    </h2>
-                    <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                        Join thousands of job seekers who have created professional resumes with our free tool.
-                    </p>
-                    <Link 
-                        href="/create-resume"
-                        className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-                    >
-                        Start Building Now
-                    </Link>
-                </div>
+      {/* CTA Section */}
+      <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          Ready to Create Your Resume?
+        </h2>
+        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          Join thousands of job seekers who have created professional resumes with our free tool.
+        </p>
+        <Link
+          href="/create-resume"
+          className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+        >
+          Start Building Now
+        </Link>
+      </div>
     </div>
   )
 }

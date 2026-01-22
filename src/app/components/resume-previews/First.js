@@ -145,12 +145,12 @@ export default function SecurityDevSecOps({ data }) {
                             <div key={index} className="mb-3">
                                 <div className="flex justify-between">
                                     <div>
-                                        <h3 className="font-bold text-lg">{edu.institution}</h3>
-                                        <p>{edu.degree}</p>
+                                        <h3 className="font-bold text-lg">{edu.institute}</h3>
+                                        <p className="font-medium">{edu.degree}</p>
                                     </div>
-                                    <div className="text-gray-600">{edu.duration}</div>
+                                    <div className="text-gray-600 ">{edu.year}</div>
                                 </div>
-                                {edu.location && <p className="text-gray-600">{edu.location}</p>}
+                                {edu.location && <p className="text-gray-600 ">{edu.location}</p>}
                             </div>
                         ))}
                     </div>
@@ -168,7 +168,7 @@ export default function SecurityDevSecOps({ data }) {
                                 <div className="flex justify-between">
                                     <div>
                                         <h3 className="font-bold text-lg">{exp.company}</h3>
-                                        <p className="font-medium">{exp.position}</p>
+                                        <p className="font-medium">{exp.role}</p>
                                     </div>
                                     <div className="text-gray-600">{exp.duration}</div>
                                 </div>

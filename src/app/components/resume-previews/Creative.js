@@ -232,10 +232,11 @@ export default function ResumeTemplatePDF({ data }) {
         email = "appleberry@gmail.com",
         phone = "(111) 222 1234",
         location = "New York, NY",
-        summary = "This should be a brief description of your professional career and years of experience in your field. You can stand out to hiring managers by detailing the problem statement you would solve for the company and how your skills will advance the success of the business.",
+        summary = "",
         education = [],
         certifications = [],
         experience = [],
+        skills="",
     } = data;
 
     const handleDownloadPDF = async () => {
@@ -339,6 +340,12 @@ export default function ResumeTemplatePDF({ data }) {
                 <Section title="SUMMARY">
                     <p>{summary}</p>
                 </Section>
+
+
+
+                <Section title="Skills">
+                    {skills}
+                    </Section>
 
                 {/* EDUCATION */}
                 <Section title="EDUCATION">

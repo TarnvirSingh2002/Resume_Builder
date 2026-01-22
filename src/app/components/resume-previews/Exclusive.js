@@ -8,11 +8,11 @@ export default function SarahATSResume({ data = {} }) {
   const resumeRef = useRef(null);
 
   const {
-    fullName = "SARAH JACKSON",
-    phone = "588.888.9999",
-    email = "youremail@gmail.com",
-    location = "New York, NY",
-    linkedin = "linkedin.com/in/username",
+    fullName = "",
+    phone = "",
+    email = "",
+    location = "",
+    linkedin = "",
     summary = "",
 
     experience = [],
@@ -35,30 +35,30 @@ export default function SarahATSResume({ data = {} }) {
   };
 
   return (
-    <div style={styles.wrapper}>
-        <div className="w-full max-w-[210mm] flex justify-end px-4 md:px-0"
-                style={{ position: "absolute" }}>
-                <button
-                    onClick={handleDownloadPDF}
-                    className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group"
-                    title="Download as PDF"
-                >
-                    <svg
-                        className="w-6 h-6 group-hover:scale-110 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                        />
-                    </svg>
-                </button>
-            </div>
+    <div className="flex flex-col items-center" style={styles.wrapper}>
+      <div className="w-full max-w-[210mm] flex justify-end px-4 md:px-0"
+        style={{ position: "absolute" }}>
+        <button
+          onClick={handleDownloadPDF}
+          className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-200 flex items-center justify-center group"
+          title="Download as PDF"
+        >
+          <svg
+            className="w-6 h-6 group-hover:scale-110 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+            />
+          </svg>
+        </button>
+      </div>
       <div ref={resumeRef} style={styles.resume}>
 
         {/* HEADER */}
@@ -77,12 +77,12 @@ export default function SarahATSResume({ data = {} }) {
           </Section>
         )}
 
-        
-          <Section title="SKILLS">
-            <p style={styles.text}>
-              {skills}
-            </p>
-          </Section>
+
+        <Section title="SKILLS">
+          <p style={styles.text}>
+            {skills}
+          </p>
+        </Section>
 
         {/* EXPERIENCE */}
         {Array.isArray(experience) && experience.length > 0 && (
@@ -90,12 +90,20 @@ export default function SarahATSResume({ data = {} }) {
             {experience.map((exp, i) => (
               <div key={i} style={styles.block}>
                 <div style={styles.row}>
-                  <strong>{exp.title}</strong>
+                  <strong>{exp.company}</strong>
                   <span>{exp.duration}</span>
                 </div>
-
+                <div style={styles.row}>
+                  <p style={{
+                    color: "#6b7280",
+                    fontWeight: 400,
+                    fontSize: "0.9rem"
+                  }}>
+                    {exp.role}
+                  </p>
+                </div>
                 <div style={styles.sub}>
-                  {exp.company}, {exp.location}
+                  {exp.description}
                 </div>
 
                 {Array.isArray(exp.points) && (
@@ -117,32 +125,25 @@ export default function SarahATSResume({ data = {} }) {
             {education.map((edu, i) => (
               <div key={i} style={styles.block}>
                 <div style={styles.row}>
+                  <strong>{edu.institute}</strong>
+                  <span>{edu.year}</span>
+                </div>
+
+                <div style={styles.row}>
                   <strong>{edu.degree}</strong>
-                  <span>{edu.duration}</span>
+                  <span>{edu.location}</span>
                 </div>
-
-                <div style={styles.sub}>
-                  {edu.institution}, {edu.location}
-                </div>
-
-                {Array.isArray(edu.points) && (
-                  <ul style={styles.list}>
-                    {edu.points.map((p, idx) => (
-                      <li key={idx}>{p}</li>
-                    ))}
-                  </ul>
-                )}
               </div>
             ))}
           </Section>
         )}
 
-        
-          <Section title="CERTIFICATIONS">
-            <ul style={styles.list}>
-              {certifications}
-            </ul>
-          </Section>
+
+        <Section title="CERTIFICATIONS">
+          <ul style={styles.list}>
+            {certifications}
+          </ul>
+        </Section>
 
       </div>
     </div>
@@ -166,7 +167,7 @@ const styles = {
   wrapper: {
     background: "#cfd6d6",
     padding: "90px 0 30px",
-    position: "relative",  
+    position: "relative",
   },
 
   resume: {
@@ -174,7 +175,7 @@ const styles = {
     minHeight: "297mm",
     background: "#fff",
     margin: "auto",
-    padding: "25mm",
+    padding: "15mm 20mm 20mm",
     fontFamily: "Georgia, serif",
     color: "#333",
   },

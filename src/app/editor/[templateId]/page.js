@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { User, Mail, Phone, MapPin, FileText, Award, Briefcase, GraduationCap } from "lucide-react";
+import { User, Mail, Phone, MapPin, FileText, Award, Briefcase, GraduationCap, Linkedin } from "lucide-react";
 import { useParams } from "next/navigation";
 
 import ClassicDevOpsResume from '../../components/resume-previews/Designer';
@@ -11,6 +11,7 @@ import Resume from '../../components/resume-previews/Classic';
 import SecurityDevSecOpsPreview from '../../components/resume-previews/Minimalist'
 import ProfessionalATS from "../../components/resume-previews/Tech";
 import SecurityDevSecOps from "../../components/resume-previews/First";
+import EnhancvModern from "../../components/resume-previews/Modern";
 const resumeTemplates = [
   {
     id: 8,//working
@@ -18,9 +19,9 @@ const resumeTemplates = [
     component: Resume
   },
   {
-    id: 2, 
+    id: 2,
     name: 'Modern Resume',
-    component: ResumeTemplate
+    component: EnhancvModern
   },
   {
     id: 3,//working
@@ -28,7 +29,7 @@ const resumeTemplates = [
     component: ResumeTemplate
   },
   {
-    id: 4, //working on it not completed
+    id: 4, //done
     name: 'Minimalist Resume',
     component: SecurityDevSecOpsPreview
   },
@@ -43,12 +44,12 @@ const resumeTemplates = [
     component: ClassicDevOpsResume
   },
   {
-    id: 5, //working
+    id: 5, //Done
     name: 'Exclusive Resume',
     component: SarahATSResume
   },
   {
-    id: 1, //working
+    id: 1, //done
     name: 'Professional',
     component: SecurityDevSecOps
   }
@@ -62,20 +63,21 @@ export default function ResumeForm() {
     email: "",
     phone: "",
     location: "",
+    linkedin: "",
     summary: "",
-    education: [{ degree: "", institute: "", year: "" }],
-    experience: [{ role: "", company: "", duration: "" }],
+    education: [{ institute: "", degree: "", year: "", location: "" }],
+    experience: [{ role: "", company: "", duration: "", description: "" }],
     skills: "",
     certifications: ""
   });
 
-const selectedTemplate = useMemo(() => {
-  return resumeTemplates.find(
-    (t) => t.id === Number(templateId)
-  );
-}, [templateId, resumeTemplates]);
+  const selectedTemplate = useMemo(() => {
+    return resumeTemplates.find(
+      (t) => t.id === Number(templateId)
+    );
+  }, [templateId, resumeTemplates]);
 
-const SelectedTemplateComponent = selectedTemplate?.component;
+  const SelectedTemplateComponent = selectedTemplate?.component;
 
   const handleSubmit = () => {
 
@@ -120,7 +122,7 @@ const SelectedTemplateComponent = selectedTemplate?.component;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-6 pt-20 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Create Your Resume</h1>
@@ -129,13 +131,13 @@ const SelectedTemplateComponent = selectedTemplate?.component;
 
         <div className="bg-white rounded-2xl shadow-xl p-8 space-y-8">
           {/* Personal Information */}
-          <div className="space-y-4">
+          <div className="space-y-1">
             <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2 border-b pb-2">
               <User className="w-6 h-6 text-blue-600" />
               Personal Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
               <div className="relative">
                 <User className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <input
@@ -183,6 +185,16 @@ const SelectedTemplateComponent = selectedTemplate?.component;
             </div>
 
             <div className="relative">
+              <Linkedin className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <input
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                name="linkedin"
+                placeholder="Social Link"
+                value={formData.linkedin}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="relative">
               <FileText className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
               <textarea
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
@@ -196,14 +208,14 @@ const SelectedTemplateComponent = selectedTemplate?.component;
           </div>
 
           {/* Education */}
-          <div className="space-y-4">
+          <div className="space-y-1">
             <div className="flex items-center justify-between border-b pb-2">
               <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
                 <GraduationCap className="w-6 h-6 text-blue-600" />
                 Education
               </h2>
               <button
-                onClick={() => addArrayItem("education", { degree: "", institute: "", year: "" })}
+                onClick={() => addArrayItem("education", { institute: "", degree: "", year: "", location: "" })}
                 className="text-blue-600 hover:text-blue-700 text-sm font-medium"
               >
                 + Add Education
@@ -215,23 +227,29 @@ const SelectedTemplateComponent = selectedTemplate?.component;
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input
                     className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
-                    placeholder="Degree"
-                    value={edu.degree}
-                    onChange={(e) => handleArrayChange(index, "degree", e.target.value, "education")}
-                  />
-                  <input
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
                     placeholder="Institute"
                     value={edu.institute}
                     onChange={(e) => handleArrayChange(index, "institute", e.target.value, "education")}
                   />
-                </div>
-                <div className="flex gap-3">
                   <input
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                    placeholder="Degree"
+                    value={edu.degree}
+                    onChange={(e) => handleArrayChange(index, "degree", e.target.value, "education")}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
                     placeholder="Year"
                     value={edu.year}
                     onChange={(e) => handleArrayChange(index, "year", e.target.value, "education")}
+                  />
+                  <input
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                    placeholder="Location"
+                    value={edu.location}
+                    onChange={(e) => handleArrayChange(index, "location", e.target.value, "education")}
                   />
                   {formData.education.length > 1 && (
                     <button
@@ -247,7 +265,7 @@ const SelectedTemplateComponent = selectedTemplate?.component;
           </div>
 
           {/* Experience */}
-          <div className="space-y-4">
+          <div className="space-y-1">
             <div className="flex items-center justify-between border-b pb-2">
               <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
                 <Briefcase className="w-6 h-6 text-blue-600" />
@@ -261,7 +279,7 @@ const SelectedTemplateComponent = selectedTemplate?.component;
               </button>
             </div>
 
-            {formData.experience.map((exp, index) => (
+            {/* {formData.experience.map((exp, index) => (
               <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-3 bg-gray-50">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <input
@@ -284,6 +302,7 @@ const SelectedTemplateComponent = selectedTemplate?.component;
                     value={exp.duration}
                     onChange={(e) => handleArrayChange(index, "duration", e.target.value, "experience")}
                   />
+                  
                   {formData.experience.length > 1 && (
                     <button
                       onClick={() => removeArrayItem("experience", index)}
@@ -294,11 +313,69 @@ const SelectedTemplateComponent = selectedTemplate?.component;
                   )}
                 </div>
               </div>
+            ))} */}
+
+            {formData.experience.map((exp, index) => (
+              <div
+                key={index}
+                className="p-4 border border-gray-200 rounded-lg space-y-3 bg-gray-50"
+              >
+                {/* Role & Company */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <input
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                    placeholder="Role"
+                    value={exp.role}
+                    onChange={(e) =>
+                      handleArrayChange(index, "role", e.target.value, "experience")
+                    }
+                  />
+                  <input
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                    placeholder="Company"
+                    value={exp.company}
+                    onChange={(e) =>
+                      handleArrayChange(index, "company", e.target.value, "experience")
+                    }
+                  />
+                </div>
+
+                {/* Duration */}
+                <input
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                  placeholder="Duration (e.g. Jan 2024 – Present)"
+                  value={exp.duration}
+                  onChange={(e) =>
+                    handleArrayChange(index, "duration", e.target.value, "experience")
+                  }
+                />
+
+                {/* Description — UNDER duration */}
+                <textarea
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white resize-none"
+                  placeholder="Describe your responsibilities, achievements, or technologies used"
+                  value={exp.description}
+                  onChange={(e) =>
+                    handleArrayChange(index, "description", e.target.value, "experience")
+                  }
+                />
+
+                {/* Remove button — LAST */}
+                {formData.experience.length > 1 && (
+                  <button
+                    onClick={() => removeArrayItem("experience", index)}
+                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
             ))}
           </div>
 
           {/* Skills & Certifications */}
-          <div className="space-y-4">
+          <div className="space-y-1">
             <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2">Additional Information</h2>
 
             <textarea

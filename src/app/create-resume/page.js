@@ -35,7 +35,7 @@ export default function CreateResumePage() {
       category: 'professional',
       color: 'bg-blue-50',
       accent: 'bg-blue-600',
-      previewImage: 'https://images.resumgo.com/2025/12/Eiger-Resume-Template-ResumGO.png'  // Clean blue professional look
+      previewImage: '/first.jpg'  // Clean blue professional look
     },
     {
       id: 2,
