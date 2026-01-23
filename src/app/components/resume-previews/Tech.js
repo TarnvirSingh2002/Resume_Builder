@@ -20,6 +20,11 @@ export default function ProfessionalATS({ data }) {
         certifications,
     } = data;
 
+    function capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     const handleDownloadPDF = async () => {
         if (!resumeRef.current) return;
 
@@ -295,9 +300,9 @@ export default function ProfessionalATS({ data }) {
                     </div>
 
                     <header className="resume-header">
-                        <h1>{fullName || "Your Name"}</h1>
+                        <h1>{capitalize(fullName) || "Your Name"}</h1>
                         <p>
-                            {location && <span>{location}</span>}
+                            {location && <span>{capitalize(location)}</span>}
                             {phone && <> • {phone}</>}
                         </p>
                         <p>{email}</p>
@@ -314,11 +319,11 @@ export default function ProfessionalATS({ data }) {
                         {experience.map((exp, index) => (
                             <div key={index} className="experience-item">
                                 <div className="experience-header">
-                                    <p>{exp.role}</p>
+                                    <p>{exp?.role ?capitalize(exp.role):""}</p>
                                     <p className="experience-duration">{exp.duration}</p>
                                 </div>
 
-                                <p className="experience-company">{exp.company}</p>
+                                <p className="experience-company">{exp?.company ?capitalize(exp.company):""}</p>
 
                                 {exp.description && (
                                     <ul className="experience-description">
@@ -337,10 +342,10 @@ export default function ProfessionalATS({ data }) {
                         {education.map((edu, index) => (
                             <div key={index} className="education-item">
                                 <div className="education-header">
-                                    <p>{edu.degree}, {edu.location}</p>
+                                    <p>{edu?.degree?capitalize(edu.degree):""}, {edu?.location?capitalize(edu.location):""}</p>
                                     <p className="education-year">{edu.year}</p>
                                 </div>
-                                <p className="education-institute">{edu.institute}</p>
+                                <p className="education-institute">{edu?.institute?capitalize(edu.institute):""}</p>
                             </div>
                         ))}
                     </section>

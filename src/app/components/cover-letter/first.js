@@ -8,47 +8,32 @@ export default function CoverLetterTemplate({ data }) {
     const letterRef = useRef(null);
     const [hideButton, setHideButton] = useState(false);
 
-    if (!data) {
-        data = {
-            fullName: "John Doe",
-            email: "john.doe@email.com",
-            phone: "+1 (555) 123-4567",
-            location: "New York, NY",
-            linkedin: "linkedin.com/in/johndoe",
-            date: "January 22, 2026",
-            recipientName: "Hiring Manager",
-            companyName: "Tech Company Inc.",
-            companyAddress: "123 Business Street, New York, NY 10001",
-            position: "Senior Developer",
-            openingParagraph: "I am writing to express my strong interest in the Senior Developer position at Tech Company Inc. With over 5 years of experience in software development and a proven track record of delivering high-quality solutions, I am excited about the opportunity to contribute to your team.",
-            bodyParagraph1: "In my current role at Previous Company, I have successfully led multiple projects from conception to deployment, resulting in a 40% increase in application performance and improved user satisfaction. My expertise in JavaScript, React, and Node.js, combined with my strong problem-solving skills, has enabled me to tackle complex technical challenges effectively.",
-            bodyParagraph2: "What particularly excites me about Tech Company Inc. is your commitment to innovation and cutting-edge technology. I am impressed by your recent projects in AI and machine learning, and I believe my background in full-stack development would allow me to make meaningful contributions to your team's success.",
-            closingParagraph: "I would welcome the opportunity to discuss how my skills and experience align with your needs. Thank you for considering my application. I look forward to the possibility of contributing to Tech Company Inc.'s continued success.",
-            signature: "John Doe"
-        };
-    }
-
     const {
         fullName = "",
         email = "",
         phone = "",
         location = "",
-        linkedin = "",
-        date = "",
         recipientName = "",
         companyName = "",
         companyAddress = "",
         position = "",
+        subject = "",
         openingParagraph = "",
         bodyParagraph1 = "",
         bodyParagraph2 = "",
-        closingParagraph = "",
-        signature = ""
     } = data;
+
+    function capitalize(str) {
+        if (!str) return '';                    // handle empty / null / undefined
+        return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+    const date = new Date();
+    const fullDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
     const handleDownloadPDF = () => {
         // UNCOMMENT THIS CODE WHEN YOU ADD html2canvas AND jsPDF TO YOUR PROJECT:
-        
+
         if (!letterRef.current) return;
 
         setHideButton(true);
@@ -152,7 +137,7 @@ export default function CoverLetterTemplate({ data }) {
                 }
 
                 .sender-info {
-                    margin-bottom: 2rem;
+                    margin-bottom: 1rem;
                 }
 
                 .sender-name {
@@ -169,12 +154,12 @@ export default function CoverLetterTemplate({ data }) {
                 }
 
                 .date-section {
-                    margin-bottom: 2rem;
+                    margin-bottom: 1rem;
                     font-size: 0.95rem;
                 }
 
                 .recipient-info {
-                    margin-bottom: 2rem;
+                    margin-bottom: 1rem;
                 }
 
                 .recipient-name {
@@ -188,7 +173,7 @@ export default function CoverLetterTemplate({ data }) {
                 }
 
                 .salutation {
-                    margin-bottom: 1.5rem;
+                    margin-bottom: 1rem;
                     font-size: 1rem;
                 }
 
@@ -203,12 +188,12 @@ export default function CoverLetterTemplate({ data }) {
                 }
 
                 .closing {
-                    margin-top: 2rem;
-                    margin-bottom: 3rem;
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
                 }
 
                 .signature-section {
-                    margin-top: 3rem;
+                    margin-top: 1rem;
                 }
 
                 .signature-line {
@@ -266,32 +251,40 @@ export default function CoverLetterTemplate({ data }) {
 
                     {/* Sender Information */}
                     <div className="sender-info">
-                        <div className="sender-name">{fullName}</div>
+                        <div className="sender-name">{capitalize(fullName)}</div>
                         <div className="sender-contact">
-                            {location && <div>{location}</div>}
+                            {location && <div>{capitalize(location)}</div>}
                             {phone && <div>{phone}</div>}
                             {email && <div>{email}</div>}
-                            {linkedin && <div>{linkedin}</div>}
                         </div>
                     </div>
 
                     {/* Date */}
                     <div className="date-section">
-                        {date}
+                        {fullDate ? fullDate : ""}
                     </div>
 
                     {/* Recipient Information */}
                     <div className="recipient-info">
-                        <div className="recipient-name">{recipientName}</div>
+                        <div className="recipient-name">{capitalize(recipientName)}</div>
                         <div className="recipient-details">
-                            {companyName && <div>{companyName}</div>}
-                            {companyAddress && <div>{companyAddress}</div>}
+                            {companyName && <div>{capitalize(companyName)}</div>}
+                            {companyAddress && <div>{capitalize(companyAddress)}</div>}
                         </div>
+                    </div>
+
+                    {/* Subject */}
+                    <div style={{
+                        marginBottom: "1rem",
+                        fontWeight: "600",
+                        fontSize: "0.95rem"
+                    }}>
+                        Subject: {capitalize(subject) || `Application for ${position}`}
                     </div>
 
                     {/* Salutation */}
                     <div className="salutation">
-                        Dear {recipientName || "Hiring Manager"},
+                        Dear {capitalize(recipientName) || "Hiring Manager"},
                     </div>
 
                     {/* Letter Body */}
@@ -313,21 +306,14 @@ export default function CoverLetterTemplate({ data }) {
                                 {bodyParagraph2}
                             </div>
                         )}
-
-                        {closingParagraph && (
-                            <div className="paragraph">
-                                {closingParagraph}
-                            </div>
-                        )}
                     </div>
 
                     {/* Closing */}
                     <div className="closing">
                         <div style={{ marginBottom: "0.5rem" }}>Sincerely,</div>
-                        
+
                         <div className="signature-section">
-                            <div className="signature-line">{signature || fullName}</div>
-                            <div className="typed-name">{fullName}</div>
+                            <div className="typed-name">{capitalize(fullName)}</div>
                         </div>
                     </div>
                 </div>

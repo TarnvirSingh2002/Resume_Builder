@@ -279,42 +279,6 @@ export default function ResumeForm() {
               </button>
             </div>
 
-            {/* {formData.experience.map((exp, index) => (
-              <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-3 bg-gray-50">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <input
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
-                    placeholder="Role"
-                    value={exp.role}
-                    onChange={(e) => handleArrayChange(index, "role", e.target.value, "experience")}
-                  />
-                  <input
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
-                    placeholder="Company"
-                    value={exp.company}
-                    onChange={(e) => handleArrayChange(index, "company", e.target.value, "experience")}
-                  />
-                </div>
-                <div className="flex gap-3">
-                  <input
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
-                    placeholder="Duration"
-                    value={exp.duration}
-                    onChange={(e) => handleArrayChange(index, "duration", e.target.value, "experience")}
-                  />
-                  
-                  {formData.experience.length > 1 && (
-                    <button
-                      onClick={() => removeArrayItem("experience", index)}
-                      className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition"
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))} */}
-
             {formData.experience.map((exp, index) => (
               <div
                 key={index}
