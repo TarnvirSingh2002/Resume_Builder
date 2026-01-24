@@ -19,6 +19,11 @@ export default function SecurityDevSecOps({ data }) {
         certifications = ""
     } = data;
 
+    function capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
     const handleDownloadPDF = async () => {
         if (!resumeRef.current) return;
 
@@ -106,7 +111,7 @@ export default function SecurityDevSecOps({ data }) {
                 {/* Header */}
                 <div className="text-center mb-4">
                     <h1 className="text-4xl font-bold tracking-tight text-gray-900 mb-1">
-                        {fullName}
+                        {capitalize(fullName)}
                     </h1>
                 </div>
 
@@ -114,7 +119,7 @@ export default function SecurityDevSecOps({ data }) {
                 <div className="text-center text-sm mb-5 space-x-3 text-gray-600">
                     {email && <span>{email}</span>}
                     {phone && <span>• {phone}</span>}
-                    {location && <span>• {location}</span>}
+                    {location && <span>• {capitalize(location)}</span>}
                     {linkedin && (
                         <span>
                             •{" "}
@@ -145,12 +150,12 @@ export default function SecurityDevSecOps({ data }) {
                             <div key={index} className="mb-3">
                                 <div className="flex justify-between">
                                     <div>
-                                        <h3 className="font-bold text-lg">{edu.institute}</h3>
-                                        <p className="font-medium">{edu.degree}</p>
+                                        <h3 className="font-bold text-lg">{edu?.institute?capitalize(edu.institute):""}</h3>
+                                        <p className="font-medium">{edu?.degree ? capitalize(edu.degree):""}</p>
                                     </div>
                                     <div className="text-gray-600 ">{edu.year}</div>
                                 </div>
-                                {edu.location && <p className="text-gray-600 ">{edu.location}</p>}
+                                {edu.location && <p className="text-gray-600 ">{edu?.location?capitalize(edu.location):""}</p>}
                             </div>
                         ))}
                     </div>
@@ -167,8 +172,8 @@ export default function SecurityDevSecOps({ data }) {
                             <div key={index} className="mb-4">
                                 <div className="flex justify-between">
                                     <div>
-                                        <h3 className="font-bold text-lg">{exp.company}</h3>
-                                        <p className="font-medium">{exp.role}</p>
+                                        <h3 className="font-bold text-lg">{exp?.company?capitalize(exp.role):""}</h3>
+                                        <p className="font-medium">{exp?.role?capitalize(exp.role):""}</p>
                                     </div>
                                     <div className="text-gray-600">{exp.duration}</div>
                                 </div>

@@ -107,7 +107,7 @@ export default function ClassicResumePreview({ data }) {
             >
                 {/* NAME */}
                 <h1 className="text-4xl font-bold text-center mb-2">
-                    {fullName}
+                    {capitalize(fullName)}
                 </h1>
 
                 <hr className="border-gray-800 mb-3" />

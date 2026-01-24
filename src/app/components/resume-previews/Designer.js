@@ -7,6 +7,10 @@ import html2canvas from "html2canvas";
 export default function ClassicDevOpsResume({ data }) {
   const resumeRef = useRef(null);
 
+  function capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
   const {
     fullName,
     email,
@@ -65,28 +69,21 @@ export default function ClassicDevOpsResume({ data }) {
       {/* Resume */}
       <div ref={resumeRef} style={styles.resume}>
         {/* Header */}
-        <h1 style={styles.name}>{fullName}</h1>
+        <h1 style={styles.name}>{capitalize(fullName)}</h1>
         <p style={styles.contact}>
-          {email} | {phone} | {location} | {linkedin}
+          {email} | {phone} | {capitalize(location)} | {linkedin}
         </p>
 
         <p style={styles.summary}>{summary}</p>
-
-        {/* {portfolio && (
-          <p style={styles.portfolio}>
-            <strong>Portfolio:</strong>{" "}
-            <a href={portfolio} target="_blank">{portfolio}</a>
-          </p>
-        )} */}
 
         {/* Education */}
         <Section title="Education">
           {education.map((edu, i) => (
             <div key={i} style={styles.block}>
-              <strong>{edu.institute}</strong>
-              <p>{edu.degree}</p>
+              <strong>{edu?.institute?capitalize(edu.institute):""}</strong>
+              <p>{edu?.degree?capitalize(edu.degree):""}</p>
               <span style={styles.muted}>
-                {edu.year} • {edu.location}
+                {edu.year} • {edu?.location?capitalize(edu.location):""}
               </span>
             </div>
           ))}
@@ -96,8 +93,8 @@ export default function ClassicDevOpsResume({ data }) {
         <Section title="Experience">
           {experience.map((exp, i) => (
             <div key={i} style={styles.block}>
-              <strong>{exp.company}</strong>
-              <p>{exp.role}</p>
+              <strong>{exp?.company?capitalize(exp.company):""}</strong>
+              <p>{exp.role?capitalize(exp.role):""}</p>
               <span style={styles.muted}>
                 {exp.duration}
               </span>

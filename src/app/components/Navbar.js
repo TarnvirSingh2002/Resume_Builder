@@ -89,9 +89,80 @@ export default function Navbar() {
                     </button>
 
                 </div>
+
+
+
+
+
+                <div className={`md:hidden ${mobileMenuOpen ? "block" : "hidden"}`}>
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200 shadow-lg">
+            <a
+              href="/"
+              className="flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m4 0h5a1 1 0 001-1V10"
+                />
+              </svg>
+              Home
+            </a>
+
+            <a
+              href="/create-resume"
+              className="flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12h6m-6 4h6m2 5H7"
+                />
+              </svg>
+              Create Resume
+            </a>
+
+            <a
+              href="/cover-letter"
+              className="flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7h8M8 11h8M8 15h6"
+                />
+              </svg>
+              Cover Letter
+            </a>
+
+            <div className="pt-4 pb-2 border-t border-gray-200 mt-2">
+              <button
+                onClick={() => {
+                  setOpen(true)
+                  setMobileMenuOpen(false)
+                }}
+                className="w-full flex justify-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition"
+              >
+                Sign In
+              </button>
+            </div>
+          </div>
+        </div>
             </nav>
 
             {open && <AuthModal onClose={() => setOpen(false)} />}
         </>
     )
 }
+
+
+

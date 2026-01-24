@@ -75,7 +75,7 @@ export default function CoverLetterTemplates() {
     {/* Heading */}
     <h1 className="text-4xl md:text-5xl font-bold text-[#2C4A5C]">
       Build Your{" "}
-      <span className="text-[#044c8c]">Perfect Cover Letter</span>{" "}
+      <span className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 bg-clip-text text-transparent">Perfect Cover Letter</span>{" "}
       in Minutes
     </h1>
 
@@ -83,7 +83,7 @@ export default function CoverLetterTemplates() {
     <p className="text-[#18445c] text-lg md:text-xl">
       Join thousands of successful job seekers who created their professional
       cover letter —{" "}
-      <span className="font-semibold text-[#044c8c]">
+      <span className="font-semibold text-blue-600">
         free, fast, and easy.
       </span>
     </p>

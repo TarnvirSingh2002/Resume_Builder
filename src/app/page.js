@@ -47,10 +47,10 @@ export default function HomePage() {
   }, [isVisible2]);
 
   const templates = [
-    { name: "Professional", color: "from-blue-500 to-blue-600" },
-    { name: "Modern", color: "from-purple-500 to-purple-600" },
-    { name: "Creative", color: "from-pink-500 to-pink-600" }
-  ]
+  { name: "Professional", color: "from-blue-500 to-blue-600", image: "/front.webp"},  
+  { name: "Modern", color: "from-purple-500 to-purple-600", image: "/frontsecond.png" },  
+  { name: "Creative", color: "from-pink-500 to-pink-600", image: "/frontthird.jpg" },  // creative style
+];
 
   const stats = [
     { number: "50K+", label: "Resumes Created" },
@@ -182,55 +182,58 @@ export default function HomePage() {
             </div>
 
             {/* Right - Animated Resume Preview */}
-            <div className={`relative transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-              <div className="relative">
-                {/* Floating Resume Cards */}
-                <div className="relative h-[440px] max-w-[400px]">
-                  {templates.map((template, index) => (
-                    <div
-                      key={index}
-                      className={`absolute inset-0 transition-all duration-700 ${activeTemplate === index
-                        ? 'opacity-100 scale-100 rotate-0 z-30'
-                        : activeTemplate === (index - 1 + 3) % 3
-                          ? 'opacity-60 scale-95 rotate-3 translate-x-4 translate-y-4 z-20'
-                          : 'opacity-30 scale-90 rotate-6 translate-x-8 translate-y-8 z-10'
-                        }`}
-                    >
-                      <div className="bg-white rounded-xl shadow-2xl p-8 h-full border border-gray-200">
-                        <div className={`h-3 bg-gradient-to-r ${template.color} rounded-full mb-6`}></div>
-                        <div className="space-y-4">
-                          <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                          <div className="h-3 bg-gray-100 rounded w-1/2"></div>
-                          <div className="h-3 bg-gray-100 rounded w-2/3"></div>
-                          <div className="pt-6 space-y-3">
-                            <div className="h-3 bg-gray-200 rounded"></div>
-                            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                            <div className="h-3 bg-gray-200 rounded w-4/6"></div>
-                          </div>
-                          <div className="pt-6 space-y-3">
-                            <div className="h-3 bg-gray-200 rounded w-3/4"></div>
-                            <div className="h-3 bg-gray-200 rounded"></div>
-                            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+             <div className={`relative transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+  <div className="relative mx-auto max-w-[420px] md:max-w-[480px]">     
 
-                {/* Template Indicator */}
-                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
-                  {templates.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveTemplate(index)}
-                      className={`h-2 rounded-full transition-all ${activeTemplate === index ? 'w-8 bg-blue-600' : 'w-2 bg-gray-300'
-                        }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+    <div className="relative h-[520px] w-full">
+      {templates.map((template, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-all duration-700 ease-out
+            ${activeTemplate === index 
+              ? 'opacity-100 scale-100 rotate-0 z-30 shadow-2xl' 
+              : activeTemplate === (index - 1 + templates.length) % templates.length 
+                ? 'opacity-70 scale-95 -rotate-6 translate-x-8 translate-y-4 z-20' 
+                : 'opacity-40 scale-90 rotate-6 translate-x-16 translate-y-8 z-10'
+            }`}
+        >
+          <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-xl h-full relative">
+            {/* Gradient accent bar at top */}
+            <div className={`h-2 bg-gradient-to-r ${template.color} w-full`}></div>
+            
+            {/* Main resume preview image */}
+            <img
+              src={template.image}
+              alt={`${template.name} Resume Template Preview`}
+              className="w-full h-[calc(100%-0.5rem)] object-cover object-top"
+              loading="lazy"
+            />
+
+            {/* Optional overlay for better contrast / branding */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
+
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Navigation dots */}
+    <div className="flex justify-center gap-3 mt-10">
+      {templates.map((_, index) => (
+        <button
+          key={index}
+          onClick={() => setActiveTemplate(index)}
+          className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            activeTemplate === index 
+              ? 'bg-blue-600 scale-125 ring-2 ring-blue-300' 
+              : 'bg-gray-300 hover:bg-gray-400'
+          }`}
+          aria-label={`Select ${templates[index].name} template`}
+        />
+      ))}
+    </div>
+  </div>
+</div>
           </div>
         </div>
       </section>

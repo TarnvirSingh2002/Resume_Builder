@@ -30,9 +30,20 @@ export default function ContactUs() {
 
     // Simulate API call - replace with real endpoint later
     try {
-      await new Promise(resolve => setTimeout(resolve, 1400));
-      setStatus('success');
-      setFormData({ fullName: '', email: '', subject: '', message: '' });
+      const response = await fetch('/api/contact',{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json"   // ← Fixed typo
+        },
+        body:JSON.stringify({fullName:formData.fullName, email:formData.email, subject:formData.subject, message:formData.message })
+      });
+      console.log("Response status:", response.status);
+      console.log(response);
+      const result = await response.json();
+      if(result.success){
+        setStatus('success');
+        setFormData({ fullName: '', email: '', subject: '', message: '' });
+      }
     } catch {
       setStatus('error');
     } finally {
@@ -91,7 +102,7 @@ export default function ContactUs() {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="your.email@example.com"
+                    placeholder="email@example.com"
                   />
                 </div>
               </div>

@@ -6,13 +6,14 @@ export default function AuthModal({ onClose }) {
     const [mode, setMode] = useState("login")
     const [focusedField, setFocusedField] = useState(null)
 
-    const handleSignIn = () => {
-        console.log("Google sign in")
+    const handleSignIn = async () => {
+        await signIn("google", { callbackUrl: "/" })
     }
 
-    const handleGitHubSignIn = () => {
-        console.log("GitHub sign in")
+    const handleGitHubSignIn = async () => {
+        await signIn("github", { callbackUrl: "/" })
     }
+
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-2">

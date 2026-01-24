@@ -279,7 +279,7 @@ export default function CoverLetterTemplate({ data }) {
                         fontWeight: "600",
                         fontSize: "0.95rem"
                     }}>
-                        Subject: {capitalize(subject) || `Application for ${position}`}
+                        Subject: {capitalize(subject) || `Application for ${capitalize(position)} position`}
                     </div>
 
                     {/* Salutation */}

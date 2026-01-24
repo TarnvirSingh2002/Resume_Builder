@@ -7,6 +7,11 @@ import html2canvas from "html2canvas";
 export default function SarahATSResume({ data = {} }) {
   const resumeRef = useRef(null);
 
+  function capitalize(str) {
+        if (!str) return '';
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
   const {
     fullName = "",
     phone = "",
@@ -63,11 +68,11 @@ export default function SarahATSResume({ data = {} }) {
 
         {/* HEADER */}
         <div style={styles.headerBar}>
-          <h1 style={styles.name}>{fullName}</h1>
+          <h1 style={styles.name}>{capitalize(fullName)}</h1>
         </div>
 
         <p style={styles.contact}>
-          {phone} | {email} | {location} | {linkedin}
+          {phone} | {email} | {capitalize(location)} | {linkedin}
         </p>
 
         {/* SUMMARY */}
@@ -90,7 +95,7 @@ export default function SarahATSResume({ data = {} }) {
             {experience.map((exp, i) => (
               <div key={i} style={styles.block}>
                 <div style={styles.row}>
-                  <strong>{exp.company}</strong>
+                  <strong>{exp?.company?capitalize(exp.company):""}</strong>
                   <span>{exp.duration}</span>
                 </div>
                 <div style={styles.row}>
@@ -99,7 +104,7 @@ export default function SarahATSResume({ data = {} }) {
                     fontWeight: 400,
                     fontSize: "0.9rem"
                   }}>
-                    {exp.role}
+                    {exp?.role?capitalize(exp.role):""}
                   </p>
                 </div>
                 <div style={styles.sub}>
@@ -125,13 +130,13 @@ export default function SarahATSResume({ data = {} }) {
             {education.map((edu, i) => (
               <div key={i} style={styles.block}>
                 <div style={styles.row}>
-                  <strong>{edu.institute}</strong>
+                  <strong>{edu?.institute?capitalize(edu.institute):""}</strong>
                   <span>{edu.year}</span>
                 </div>
 
                 <div style={styles.row}>
-                  <strong>{edu.degree}</strong>
-                  <span>{edu.location}</span>
+                  <strong>{edu?.degree?capitalize(edu.degree):""}</strong>
+                  <span>{edu?.location?capitalize(edu.location):""}</span>
                 </div>
               </div>
             ))}
