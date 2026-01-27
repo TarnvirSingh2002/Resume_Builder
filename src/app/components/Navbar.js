@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import AuthModal from "./AuthModal"
-
+import { useSession, signOut } from "next-auth/react";
 export default function Navbar() {
     const [open, setOpen] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const { data: session, status } = useSession();
 
     return (
         <>
@@ -62,12 +63,19 @@ export default function Navbar() {
 
                     {/* RIGHT — Sign In (no space) */}
                     <div className="hidden md:flex items-center pr-4">
-                        <button
+                        {status !== "authenticated" ? (<button
                             onClick={() => setOpen(true)}
                             className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md shadow-sm transition"
                         >
                             Sign In
+                        </button>): (
+                        <button
+                            onClick={() => signOut({ callbackUrl: "/" })}
+                            className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md shadow-sm transition"
+                        >
+                            Logout
                         </button>
+                        )}
                     </div>
 
                     {/* MOBILE MENU */}
