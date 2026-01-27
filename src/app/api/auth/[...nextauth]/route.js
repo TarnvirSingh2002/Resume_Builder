@@ -9,7 +9,7 @@ import dbConnect from "../../lib/mongodb";
 import User from "../../models/User";
 
 const handler = NextAuth({
-  providers: [
+  providers: [ // in providers we add all the functions with which we want to login
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -26,6 +26,11 @@ const handler = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+      // credentials: { We can also write like this
+      //   email: { type: "email" },
+      //   password: { type: "password" },
+      // }
+
       async authorize(credentials) {
         await dbConnect();
         const user = await User.findOne({email:credentials.email});
