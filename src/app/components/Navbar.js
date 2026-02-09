@@ -153,15 +153,21 @@ export default function Navbar() {
             </a>
 
             <div className="pt-4 pb-2 border-t border-gray-200 mt-2">
-              <button
-                onClick={() => {
-                  setOpen(true)
-                  setMobileMenuOpen(false)
-                }}
+            {status !== "authenticated" ? (<button
+                            onClick={() => {setOpen(true)
+                                setMobileMenuOpen(false)
+                            }}
                 className="w-full flex justify-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition"
-              >
-                Sign In
-              </button>
+                        >
+                            Sign In
+                        </button>): (
+                        <button
+                            onClick={() => signOut({ callbackUrl: "/" })}
+                className="w-full flex justify-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm transition"
+                        >
+                            Logout
+                        </button>
+                        )}
             </div>
           </div>
         </div>
